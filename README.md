@@ -1,6 +1,6 @@
-# Either
+# Voter/Counter
 
-Either lets anyone create a visual poll with 2–10 options with their own question, labels, descriptions, and uploaded photos. Each new poll opens at a shareable `/?poll=<id>` link. The homepage keeps the original mountains-or-ocean poll. Use Add option or Remove option before publishing to choose the number of contenders. Images may total up to 4 MB per poll. Each option pairs photography with a text label, a vote button, an animated flip counter, and its share of the vote. Results refresh every two seconds. Votes persist in Netlify Database, with one vote per browser enforced by a cookie and a database primary key.
+Voter/Counter lets anyone create a visual poll with 2–10 options with their own question, labels, descriptions, and uploaded photos. Each new poll opens at a shareable `/?poll=<id>` link. The homepage keeps the original mountains-or-ocean poll. Use Add option or Remove option before publishing to choose the number of contenders. Images may total up to 4 MB per poll. Each option pairs photography with a text label, a vote button, an animated flip counter, and its share of the vote. Results refresh every two seconds. Votes persist in Netlify Database, with one vote per browser enforced by a cookie and a database primary key.
 
 Built with React 19, TypeScript, TanStack Start, Vite, CSS, Lucide icons, Netlify Functions, and Drizzle ORM with Netlify Database. Default photography is stored in `public/img` and served through Netlify Image CDN. Uploaded JPEG, PNG, and WebP images (up to 1.5 MB each) persist in Netlify Blobs. Poll definitions and per-poll votes persist in Netlify Database. The original `votes` table remains intact; custom polls use `polls` and `poll_votes`. Options are fixed after publishing.
 

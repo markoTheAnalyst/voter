@@ -6,11 +6,12 @@ import { NotFoundPage } from '@/components/error-pages'
 
 import '../styles.css'
 
-const siteName = 'Either — Pick your side'
-const siteDescription = 'Great options. One little decision. Cast your vote and watch the live flip counters on Either.'
+const siteName = 'Voter/Counter — Every opinion counts'
+const siteDescription = 'Create a poll, share your choices, and watch every opinion count with live voting results on Voter/Counter.'
 
 export const Route = createRootRoute({
   head: () => ({
+    links: [{ rel: 'icon', type: 'image/svg+xml', href: '/brand-mark.svg' }],
     meta: [
       {
         charSet: 'utf-8',

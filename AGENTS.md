@@ -1,6 +1,6 @@
-# Either architecture
+# Voter/Counter architecture
 
-Either hosts public polls with 2–10 options built with TanStack Start and React. Its editorial visual design uses warm off-white surfaces, sage accents, travel photography, and dark flip counters.
+Voter/Counter hosts public polls with 2–10 options built with TanStack Start and React. Its editorial visual design uses dark navy surfaces, teal accents, travel photography, and dark flip counters.
 
 ## Key directories
 
