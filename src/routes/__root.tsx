@@ -7,7 +7,7 @@ import { NotFoundPage } from '@/components/error-pages'
 import '../styles.css'
 
 const siteName = 'Either — Pick your side'
-const siteDescription = 'Two great options. One little decision. Cast your vote and watch the live flip counters on Either.'
+const siteDescription = 'Great options. One little decision. Cast your vote and watch the live flip counters on Either.'
 
 export const Route = createRootRoute({
   head: () => ({

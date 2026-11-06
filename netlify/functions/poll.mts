@@ -23,17 +23,17 @@ export default async (req: Request, context: Context) => {
       if (req.headers.get('origin') !== url.origin) return Response.json({ error: 'Request not allowed. Reload the poll and try again.' }, { status: 403, headers })
       let body: { choice?: unknown }
       try { body = await req.json() } catch { return Response.json({ error: 'Invalid vote.' }, { status: 400, headers }) }
-      if (body.choice !== 'mountains' && body.choice !== 'ocean') return Response.json({ error: 'Choose option A or B.' }, { status: 400, headers })
+      if (typeof body.choice !== 'string' || !definition.options.some(option => option.id === body.choice)) return Response.json({ error: 'Choose one of this poll’s options.' }, { status: 400, headers })
       if (id === 'default') await db.insert(votes).values({ voterId, choice: body.choice }).onConflictDoNothing()
       else await db.insert(pollVotes).values({ pollId: id, voterId, choice: body.choice }).onConflictDoNothing()
     }
-    // Both tables use the same choices; existing votes remain on the original poll.
+    // Existing votes remain on the original poll; custom choices belong to their poll.
     const table = id === 'default' ? votes : pollVotes
     const totals = await db.select({ choice: table.choice, count: count() }).from(table)
       .where(id === 'default' ? undefined : eq(pollVotes.pollId, id)).groupBy(table.choice)
     const [mine] = await db.select({ choice: table.choice }).from(table)
       .where(id === 'default' ? eq(votes.voterId, voterId) : and(eq(pollVotes.pollId, id), eq(pollVotes.voterId, voterId)))
-    return Response.json({ id, question: definition.question, options: definition.options, mountains: Number(totals.find(r => r.choice === 'mountains')?.count ?? 0), ocean: Number(totals.find(r => r.choice === 'ocean')?.count ?? 0), choice: mine?.choice ?? null }, { headers })
+    return Response.json({ id, question: definition.question, options: definition.options, totals: Object.fromEntries(definition.options.map(option => [option.id, Number(totals.find(row => row.choice === option.id)?.count ?? 0)])), mountains: Number(totals.find(r => r.choice === 'mountains')?.count ?? 0), ocean: Number(totals.find(r => r.choice === 'ocean')?.count ?? 0), choice: mine?.choice ?? null }, { headers })
   } catch {
     return Response.json({ error: 'We couldn’t connect to the poll. Please try again.' }, { status: 503, headers })
   }

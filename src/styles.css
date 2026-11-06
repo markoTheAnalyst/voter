@@ -236,3 +236,16 @@ footer { margin-top: 51px; border-top: 1px solid var(--line); display: flex; ali
 .intro-copy { max-width: 80%; overflow-wrap: anywhere; }
 .card-copy > div { min-width: 0; overflow-wrap: anywhere; }
 @media(max-width:650px) { .creator-options { grid-template-columns: 1fr; }.creator-dialog { padding: 24px; }.site-header { gap: 12px; }.create-poll-button { font-size: 11px; padding: 9px; }.site-header .text-button { font-size: 10px; gap: 4px; }.intro-copy { max-width: 100%; } }
+
+/* Nine-digit counters flex within every card, including narrow screens. */
+.results { gap: 12px; flex-wrap: wrap; }
+.results > div:first-child { flex: 1; min-width: 0; max-width: 320px; }
+.flip-counter { gap: 3px; }
+.flip-counter .flip-digit { flex: 1; min-width: 0; width: auto; height: clamp(32px, 4vw, 46px); }
+.flip-counter .digit-number { font-size: clamp(18px, 2.7vw, 30px); }
+.add-option-button { margin-top: 16px; }
+@media (max-width: 650px) {
+  .results > div:first-child { flex-basis: 100%; }
+  .flip-counter .flip-digit { height: 40px; }
+  .flip-counter .digit-number { font-size: 25px; }
+}

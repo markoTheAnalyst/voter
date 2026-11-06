@@ -17,10 +17,10 @@ vi.mock('../db/index', async () => {
       if (!state.rows.some(r => r.pollId === pollId && r.voterId === row.voterId)) state.rows.push({ ...row, pollId })
     } }) }),
     select: (fields?: { count?: unknown }) => ({ from: (table: unknown) => ({ where: () => {
-      if (table === polls) return Promise.resolve([{ id: state.id, question: 'Tea or coffee?', options: defaultPoll.options }])
+      if (table === polls) return Promise.resolve([{ id: state.id, question: 'Tea or coffee?', options: [...defaultPoll.options, { id: 'option-3', title: 'Stay home', description: '', image: '/home.png' }] }])
       const rows = state.rows.filter(r => r.pollId === (table === pollVotes ? state.id : 'default'))
       const mine = rows.filter(r => r.voterId === state.cookie)
-      return Object.assign(Promise.resolve(mine), { groupBy: async () => fields?.count ? ['mountains', 'ocean'].map(choice => ({ choice, count: String(rows.filter(r => r.choice === choice).length) })) : [] })
+      return Object.assign(Promise.resolve(mine), { groupBy: async () => fields?.count ? ['mountains', 'ocean', 'option-3'].map(choice => ({ choice, count: String(rows.filter(r => r.choice === choice).length) })) : [] })
     } }) }),
   }) }
 })
@@ -55,4 +55,14 @@ describe('poll voting', () => {
     expect((await vote('mountains', 'invalid')).status).toBe(404)
     expect(state.rows).toHaveLength(0)
   })
+})
+
+it('counts additional options, keeps zero totals, and rejects options from other polls', async () => {
+  const response = await vote('option-3', state.id)
+  expect(response.status).toBe(200)
+  expect(await response.json()).toMatchObject({ totals: { mountains: 0, ocean: 0, 'option-3': 1 }, choice: 'option-3' })
+  await vote('ocean', state.id)
+  expect(state.rows).toHaveLength(1)
+  expect((await vote('option-3')).status).toBe(400)
+  expect((await vote('option-4', state.id)).status).toBe(400)
 })

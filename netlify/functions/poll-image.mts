@@ -4,7 +4,7 @@ import { getStore } from '@netlify/blobs'
 export default async (req: Request) => {
   if (req.method !== 'GET') return new Response('Method not allowed', { status: 405, headers: { Allow: 'GET' } })
   const key = new URL(req.url).searchParams.get('key') ?? ''
-  if (!/^[a-f0-9-]{36}-[01]\.(jpg|png|webp)$/.test(key)) return new Response('Not found', { status: 404 })
+  if (!/^[a-f0-9-]{36}-[0-9]\.(jpg|png|webp)$/.test(key)) return new Response('Not found', { status: 404 })
   try {
     const data = await getStore({ name: 'poll-images', consistency: 'strong' }).get(key, { type: 'arrayBuffer' })
     if (!data) return new Response('Not found', { status: 404 })

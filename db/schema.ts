@@ -22,5 +22,4 @@ export const pollVotes = pgTable('poll_votes', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
   primaryKey({ columns: [table.pollId, table.voterId] }),
-  check('valid_poll_choice', sql`${table.choice} in ('mountains', 'ocean')`),
 ])

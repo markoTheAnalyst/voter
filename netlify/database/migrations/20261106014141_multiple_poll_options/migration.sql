@@ -1,0 +1,1 @@
+ALTER TABLE "poll_votes" DROP CONSTRAINT "valid_poll_choice";

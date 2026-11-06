@@ -1,6 +1,6 @@
 # Either architecture
 
-Either hosts public, two-option polls built with TanStack Start and React. Its editorial visual design uses warm off-white surfaces, sage accents, travel photography, and dark flip counters.
+Either hosts public polls with 2–10 options built with TanStack Start and React. Its editorial visual design uses warm off-white surfaces, sage accents, travel photography, and dark flip counters.
 
 ## Key directories
 
@@ -19,7 +19,7 @@ Either hosts public, two-option polls built with TanStack Start and React. Its e
 
 ## Conventions and decisions
 
-Use TypeScript and React hooks. Keep browser APIs out of server render. The internal choice IDs remain `mountains` and `ocean` for option A and B; user-facing titles and images are arbitrary. Anyone can create a poll with a question, two options and two image uploads. Polls use shareable `/?poll=<uuid>` links. The homepage keeps the original shared poll. There is no administration or editing after publication.
+Use TypeScript and React hooks. Keep browser APIs out of server render. The first two internal choice IDs remain `mountains` and `ocean` for compatibility; additional options use `option-3` through `option-10`. The API validates choices against each poll’s stored options. Per-option results are returned in `totals`, with legacy `mountains` and `ocean` fields retained. Nine-digit flip counters display the results; user-facing titles and images are arbitrary. Anyone can create a poll with a question, 2–10 options and one image upload per option. Polls use shareable `/?poll=<uuid>` links. The homepage keeps the original shared poll. There is no administration or editing after publication.
 
 Vote totals start at zero and always come from the database. Do not fabricate initial vote totals. A persistent HTTP-only cookie identifies each browser; its ID is the original votes table primary key. Custom polls use a composite primary key of poll ID and voter ID in `poll_votes`. Insert-on-conflict prevents duplicate votes, including concurrent submissions. This provides browser-level deduplication, not verified human identity. Votes cannot be changed through the UI.
 
@@ -29,4 +29,4 @@ Results refresh every two seconds with uncached requests. A shared busy ref prev
 
 Run locally through `netlify dev --port 8889` for Functions, Database, and Image CDN support. In platform agent runs, follow platform validation restrictions; the deployment pipeline validates builds.
 
-Uploads are JPEG, PNG, or WebP, capped at 1.5 MB per image with server-side signature checks. Store files in the `poll-images` Netlify Blobs store using strong consistency so newly created polls can immediately display images. Store structured poll definitions in Netlify Database. Preserve all applied migrations.
+Uploads are JPEG, PNG, or WebP, capped at 1.5 MB per image and 4 MB combined with server-side signature checks. Store files in the `poll-images` Netlify Blobs store using strong consistency so newly created polls can immediately display images. Store structured poll definitions in Netlify Database. Preserve all applied migrations.
