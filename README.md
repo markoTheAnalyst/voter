@@ -17,3 +17,5 @@ The platform runs production validation and deployment. `pnpm build` is the prod
 Run `pnpm typecheck` and `pnpm exec vitest run src/poll-api.test.ts src/poll-creation.test.ts src/poll-voting.test.tsx src/poll-creator.test.tsx` for the vote-counting, duplicate-submission, poll-isolation, upload, and refresh-race checks. With a platform preview database connection, `RUN_POLL_DATABASE_TEST=1 pnpm exec vitest run src/poll-runtime.test.ts` also verifies real database reads. The agent connection is read-only; real submissions and new-table integration require the deployment migration and runtime connection.
 
 Vote counters display nine digits. Existing two-option polls keep their original IDs and votes. The `multiple_poll_options` migration removes the old two-choice constraint from custom poll votes; Netlify must apply it at deployment before additional options can receive votes. The API validates every choice against its poll definition.
+
+It may revert to a private repo
